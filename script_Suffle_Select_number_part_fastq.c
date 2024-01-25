@@ -71,9 +71,9 @@ void splitFastq(const char* inputFile1, const char* inputFile2, const char* outp
     while (fgets(line, MAX_LINE_LENGTH, fp1) != NULL) {
         char id[MAX_LINE_LENGTH], seq[MAX_LINE_LENGTH], qual[MAX_LINE_LENGTH];
         sscanf(line, "%s", id);
-        fgets(seq, MAX_LINE_LENGTH, fp1);
+        fgets(seq, MAX_LINE_LENGTH, fp1);  // Read the sequence line
         fgets(line, MAX_LINE_LENGTH, fp1);  // Skip '+'
-        fgets(qual, MAX_LINE_LENGTH, fp1);
+        fgets(qual, MAX_LINE_LENGTH, fp1);  // Read the quality line
 
         pushFastqRecord(&records1, id, seq, qual);
     }
@@ -81,9 +81,9 @@ void splitFastq(const char* inputFile1, const char* inputFile2, const char* outp
     while (fgets(line, MAX_LINE_LENGTH, fp2) != NULL) {
         char id[MAX_LINE_LENGTH], seq[MAX_LINE_LENGTH], qual[MAX_LINE_LENGTH];
         sscanf(line, "%s", id);
-        fgets(seq, MAX_LINE_LENGTH, fp2);
+        fgets(seq, MAX_LINE_LENGTH, fp2);  // Read the sequence line
         fgets(line, MAX_LINE_LENGTH, fp2);  // Skip '+'
-        fgets(qual, MAX_LINE_LENGTH, fp2);
+        fgets(qual, MAX_LINE_LENGTH, fp2);  // Read the quality line
 
         pushFastqRecord(&records2, id, seq, qual);
     }
@@ -121,10 +121,10 @@ void splitFastq(const char* inputFile1, const char* inputFile2, const char* outp
         size_t endIdx = (partNumber == numParts - 1) ? numRecords : (partNumber + 1) * recordsPerPart;
 
         for (size_t i = startIdx; i < endIdx; ++i) {
-            fprintf(outFp1, "%s%s+\n%s", records1.records[indices[i]].id,
+            fprintf(outFp1, "%s\n%s+\n%s", records1.records[indices[i]].id,
                     records1.records[indices[i]].seq, records1.records[indices[i]].qual);
 
-            fprintf(outFp2, "%s%s+\n%s", records2.records[indices[i]].id,
+            fprintf(outFp2, "%s\n%s+\n%s", records2.records[indices[i]].id,
                     records2.records[indices[i]].seq, records2.records[indices[i]].qual);
         }
 
@@ -157,3 +157,4 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
